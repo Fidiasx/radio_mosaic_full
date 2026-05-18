@@ -1,0 +1,3 @@
+
+rootProject.name = 'radio_mosaic_premium'
+include ':app'
