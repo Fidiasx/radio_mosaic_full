@@ -2,6 +2,7 @@ name: Flutter Android Build
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,9 +20,10 @@ jobs:
           rm -rf android
           flutter create .
 
-      - name: Update Kotlin version
+      - name: Force Kotlin 1.9.24
         run: |
-          sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = '\''1.9.24'\''/' android/build.gradle || true
+          sed -i "s/id 'org.jetbrains.kotlin.android' version '[^']*'/id 'org.jetbrains.kotlin.android' version '1.9.24'/" android/settings.gradle
+          grep "org.jetbrains.kotlin.android" android/settings.gradle
 
       - name: Install dependencies
         run: flutter pub get
@@ -32,5 +34,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: radio-mosaic-apk
           path: build/app/outputs/flutter-apk/app-release.apk
