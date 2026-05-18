@@ -1,4 +1,3 @@
-
 name: Flutter Android Build
 
 on:
@@ -16,13 +15,21 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: 'stable'
 
-      - run: flutter pub get
+      - name: Regenerate Android project
+        run: |
+          rm -rf android
+          flutter create .
 
-      - run: flutter build apk --release
+      - name: Install dependencies
+        run: flutter pub get
 
-      - uses: actions/upload-artifact@v4
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          name: release-apk
+          name: radio-mosaic-apk
           path: build/app/outputs/flutter-apk/app-release.apk
