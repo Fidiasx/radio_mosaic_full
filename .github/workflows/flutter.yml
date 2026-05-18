@@ -20,10 +20,14 @@ jobs:
           rm -rf android
           flutter create .
 
-      - name: Force Kotlin 1.9.24
+      - name: Force modern Kotlin
         run: |
+          sed -i "s/id \"org.jetbrains.kotlin.android\" version \"[^\"]*\"/id \"org.jetbrains.kotlin.android\" version \"1.9.24\"/" android/settings.gradle
           sed -i "s/id 'org.jetbrains.kotlin.android' version '[^']*'/id 'org.jetbrains.kotlin.android' version '1.9.24'/" android/settings.gradle
-          grep "org.jetbrains.kotlin.android" android/settings.gradle
+          cat android/settings.gradle
+
+      - name: Clean
+        run: flutter clean
 
       - name: Install dependencies
         run: flutter pub get
